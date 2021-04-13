@@ -1,21 +1,27 @@
-resource "azurerm_storage_account" "sa" {
-  name                     = (var.name == null ? random_string.random[0].result : var.name)
+resource "azurerm_storage_account" "storage_account" {
+  count                    = var.enable && var.enable_storage_account && var.storage_account_count > 0 ? var.storage_account_count : 0
+  name                     = element(var.storage_account, count.index)
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_kind             = var.account_kind
-  account_tier             = local.account_tier
+  account_tier             = var.account_tier
   account_replication_type = var.replication_type
   access_tier              = var.access_tier
 
   is_hns_enabled           = var.enable_hns
-  large_file_share_enabled = var.enable_large_file_share 
+  large_file_share_enabled = var.enable_large_file_share
 
   allow_blob_public_access  = var.allow_blob_public_access
   enable_https_traffic_only = var.enable_https_traffic_only
   min_tls_version           = var.min_tls_version
 
   identity {
-    type = "SystemAssigned"
+    dynamic "identity" {
+      for_each = (var.identity_type == null ? [] : [1])
+      content {
+        type = var.identity_type
+      }
+    }
   }
 
   blob_properties {
@@ -42,7 +48,7 @@ resource "azurerm_storage_account_network_rules" "netrule" {
   resource_group_name        = var.resource_group_name
   storage_account_name       = azurerm_storage_account.sa.name
   default_action             = (contains(values(var.access_list), "0.0.0.0/0") ? "Allow" : "Deny")
-  ip_rules                   = (contains(values(var.access_list), "0.0.0.0/0") ? [] : values(var.access_list)) 
+  ip_rules                   = (contains(values(var.access_list), "0.0.0.0/0") ? [] : values(var.access_list))
   virtual_network_subnet_ids = values(var.service_endpoints)
   bypass                     = var.traffic_bypass
 }
