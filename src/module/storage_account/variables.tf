@@ -1,124 +1,38 @@
-##
-# Required parameters
-##
-variable "name" {
-  description = "Storage account name."
-  type        = string
-  default     = null
+variable "resource_group_name" {
+  description = "The name of the resource group in which to create the storage account. Changing this forces a new resource to be created"
+}
+
+variable "storage_account_name" {
+  description = "Specifies the name of the storage account. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group."
 }
 
 variable "location" {
-  description = "Specifies the supported Azure location to MySQL server resource"
-  type        = string
-}
-
-variable "resource_group_name" {
-  description = "name of the resource group to create the resource"
-  type        = string
-}
-
-variable "names" {
-  description = "names to be applied to resources"
-  type        = map(string)
-}
-
-variable "tags" {
-  description = "tags to be applied to resources"
-  type        = map(string)
-}
-
-variable "account_kind" {
-  description = "Defines the Kind of account. Valid options are BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2"
-  type        = string
+  description = "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
 }
 
 variable "account_tier" {
-  description = "Defines the Tier to use for this storage account (Standard or Premium)."
-  type        = string
-  default     = null
+  description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
 }
 
-variable "replication_type" {
-  description = "Storage account replication type - i.e. LRS, GRS, RAGRS, ZRS, GZRS, RAGZRS."
-  type        = string
+variable "account_replication_type" {
+  description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS and ZRS."
 }
 
-variable "access_tier" {
-  description = "Defines the access tier for BlobStorage, FileStorage and StorageV2 accounts (Hot or Cold)."
-  type        = string
-  default     = "Hot"
+
+variable "static_website" {
+  default = {
+    index_document = ""
+    error_document = ""
+  }
+
+  description = "static_website can only be set when the account_kind is set to StorageV2"
 }
 
-variable "enable_large_file_share" {
-  description = "Enable Large File Share."
-  type        = bool
-  default     = false
-}
-
-variable "enable_hns" {
-  description = "Enable Hierarchical Namespace (can be used with Azure Data Lake Storage Gen 2)."
-  type        = bool
-  default     = false
-}
-
-variable "enable_https_traffic_only" {
-  description = "Forces HTTPS if enabled."
-  type        = bool
-  default     = true
-}
-
-variable "min_tls_version" {
-  description = "The minimum supported TLS version for the storage account."
-  type        = string
-  default     = "TLS1_2"
-}
-
-variable "allow_blob_public_access" {
-  description = "Allow or disallow public access to all blobs or containers in the storage account."
-  type        = bool
-  default     = false
-}
-
-# Note: make sure to include the IP address of the host from where "terraform" command is executed to allow for access to the storage
-# Otherwise, creating container inside the storage or any access attempt will be denied.
-variable "access_list" {
-  description = "Map of CIDRs Storage Account access."
-  type        = map(string)
-  default     = {}
-}
-
-variable "service_endpoints" {
-  description = "Creates a virtual network rule in the subnet_id (values are virtual network subnet ids)."
-  type        = map(string)
-  default     = {}
-}
-
-variable "traffic_bypass" {
-  description = "Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Valid options are any combination of Logging, Metrics, AzureServices, or None."
-  type        = list(string)
-  default     = ["None"]
-}
-
-variable "identity_type" {
-  description = "The identity type for the storage account."
-  type        = string
-  default     = "SystemAssigned"
-}
-
-variable "blob_delete_retention_days" {
-  description = "Retention days for deleted blob. Valid value is between 1 and 365."
-  type        = number
-  default     = 7
-}
-
-variable "blob_cors" {
-  description = "blob service cors rules"
-  type = map(object({
-    allowed_headers    = list(string)
-    allowed_methods    = list(string)
-    allowed_origins    = list(string)
-    exposed_headers    = list(string)
-    max_age_in_seconds = number
-  }))
-  default = null
+variable "network_rules" {
+  default = {
+    default_action = ""
+    bypass         = []
+    ip_rules       = []
+  }
+  description = "If specifying network_rules, one of either ip_rules or virtual_network_subnet_ids must be specified and default_action must be set to Deny."
 }
