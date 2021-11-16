@@ -1,17 +1,17 @@
-resource "azurerm_dns_zone" "child" {
-  provider            = azurerm.child
-  name                = "${lower(var.child_domain_prefix)}.${lower(var.parent_domain)}"
-  resource_group_name = var.child_domain_resource_group_name
-  tags                = var.tags
+resource "azurerm_cdn_profile" "cdn_profile" {
+  name                = "${var.cdn_profile_name}"
+  location            = "${var.location}"
+  resource_group_name = "${var.resource_group_name}"
+  sku                 = "${var.cdn_profile_sku}"
 }
 
-resource "azurerm_dns_ns_record" "child" {
-  provider            = azurerm.parent
-  name                = lower(var.child_domain_prefix)
-  zone_name           = lower(var.parent_domain)
-  resource_group_name = var.parent_domain_resource_group_name
-  ttl                 = 300
-  tags                = var.tags
-
-  records = azurerm_dns_zone.child.name_servers
+resource "azurerm_cdn_endpoint" "cdn_endpoint" {
+  name                = "${azurerm_cdn_profile.cdn_profile.name}"
+  profile_name        = "${azurerm_cdn_profile.cdn_profile.name}"
+  location            = "${azurerm_cdn_profile.cdn_profile.location}"
+  resource_group_name = "${azurerm_cdn_profile.cdn_profile.resource_group_name}"
+  origin {
+    name      = "${var.cdn_endpoint_origin_name}"
+    host_name = "${var.cdn_endpoint_origin_hostname}"
+  }
 }

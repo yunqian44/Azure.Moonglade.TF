@@ -1,35 +1,32 @@
-variable "child_domain_subscription_id" {
-  description = "ID of the target subscription"
-  type = string
+variable "resource_group_name" {
+  description = "Specifies the name of the CDN Profile. Changing this forces a new resource to be created."
 }
 
-variable "child_domain_resource_group_name" {
-  description = "name of the target resource group"
-  type = string
+variable "location" {
+  description = "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
 }
 
-variable "child_domain_prefix" {
-  description = "child domain prefix (<child_domain_prefix>.<parent_domain>)"
-  type = string
+variable "cdn_profile_name" {
+  description = "Specifies the name of the CDN Profile. Changing this forces a new resource to be created."
 }
 
-variable "parent_domain_subscription_id" {
-  description = "ID of the parent subscription - This is the owner of the parent domain"
-  type = string
+variable "cdn_profile_sku" {
+  description = "The pricing related information of current CDN profile. Accepted values are Standard_Akamai, Standard_ChinaCdn, Standard_Microsoft, Standard_Verizon or Premium_Verizon."
 }
 
-variable "parent_domain_resource_group_name" {
-  description = "name of the pre-existing parent resource_group - This is the owner of the root domain"
-  type = string
+# variable "cdn_endpoint_name" {
+#   description = "Specifies the name of the CDN Endpoint. Changing this forces a new resource to be created."
+# }
+
+variable "cdn_endpoint_origin_name" {
+  description=" The name of the origin. This is an arbitrary value. However, this value needs to be unique under the endpoint. Changing this forces a new resource to be created."
 }
 
-variable "parent_domain" {
-  description = "pre-existing parent domain in which to create the NS record for the child domain"
-  type        = string
+variable "cdn_endpoint_origin_hostname" {
+  description="A string that determines the hostname/IP address of the origin server. This string can be a domain name, Storage Account endpoint, Web App endpoint, IPv4 address or IPv6 address. Changing this forces a new resource to be created."
 }
 
-# Meta Data
-variable "tags" {
-  description = "Tags to be applied to resources (inclusive)"
-  type        = map(string)
-}
+
+
+
+
