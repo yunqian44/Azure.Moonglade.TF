@@ -15,20 +15,20 @@ terraform {
 
 
 provider "azurerm" {
-  features{}
+  features {}
 }
 
 resource "random_string" "random_prefix" {
   length  = 4
-  upper = false
+  upper   = false
   special = false
 }
 
 locals {
-  resource_group_name  = replace(var.resource_group_name,"[suffix]",random_string.random_prefix.id)
-  storage_account_name = replace(var.storage_account_name,"[suffix]",random_string.random_prefix.id)
-  storage_account_container_name = replace(var.storage_account_container_name,"[suffix]",random_string.random_prefix.id)
-  cdn_profile_name     = replace(var.cdn_profile_name,"[suffix]",random_string.random_prefix.id)
+  resource_group_name            = replace(var.resource_group_name, "[suffix]", random_string.random_prefix.id)
+  storage_account_name           = replace(var.storage_account_name, "[suffix]", random_string.random_prefix.id)
+  storage_account_container_name = replace(var.storage_account_container_name, "[suffix]", random_string.random_prefix.id)
+  cdn_profile_name               = replace(var.cdn_profile_name, "[suffix]", random_string.random_prefix.id)
 }
 
 data "azurerm_resource_group" "moonglade_resource_group" {
@@ -36,20 +36,20 @@ data "azurerm_resource_group" "moonglade_resource_group" {
 }
 
 module "moonglade_storage_account" {
-  source                   = "../module/storage_account"
-  resource_group_name      = data.azurerm_resource_group.moonglade_resource_group.name
-  location                 = data.azurerm_resource_group.moonglade_resource_group.location
-  enable_storage_account   = true
-  storage_account_count    = 1
-  allow_blob_public_access = var.allow_blob_public_access
-  storage_account_names    = [local.storage_account_name]
+  source                    = "../module/storage_account"
+  resource_group_name       = data.azurerm_resource_group.moonglade_resource_group.name
+  location                  = data.azurerm_resource_group.moonglade_resource_group.location
+  enable_storage_account    = true
+  storage_account_count     = 1
+  allow_blob_public_access  = var.allow_blob_public_access
+  storage_account_names     = [local.storage_account_name]
   account_tiers             = lookup(var.storage_sku, "account_tier")
   account_replication_types = lookup(var.storage_sku, "account_replication_type")
-  
+
   enable_storage_container        = true
   storage_container_count         = 1
   storage_account_container_names = [local.storage_account_container_name]
-  container_access_types   = var.container_access_types
+  container_access_types          = var.container_access_types
 }
 
 # module "moonglade_cdn" {
