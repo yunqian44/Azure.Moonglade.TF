@@ -1,11 +1,11 @@
 resource "azurerm_storage_account" "storageAccount" {
   count                    = var.enable_storage_account && var.storage_account_count > 0 ? var.storage_account_count : 0
-  name                     = element(var.storage_account_names,count.index)
+  name                     = element(var.storage_account_names, count.index)
   resource_group_name      = var.resource_group_name
   location                 = var.location
-  account_tier             = element(var.account_tiers,count.index)
-  account_replication_type = element(var.account_replication_types,count.index)
-  allow_blob_public_access = var.allow_blob_public_access 
+  account_tier             = element(var.account_tiers, count.index)
+  account_replication_type = element(var.account_replication_types, count.index)
+  allow_blob_public_access = var.allow_blob_public_access
 
   dynamic "static_website" {
     for_each = element(var.static_website_index_document, count.index) != "" ? ["static web site"] : []
@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "storageAccount" {
     }
   }
 
-  dynamic "network_rules" { 
+  dynamic "network_rules" {
     for_each = element(var.network_rules_default_action, count.index) != "" ? ["network rules"] : []
 
     content {
@@ -31,7 +31,7 @@ resource "azurerm_storage_account" "storageAccount" {
 
 resource "azurerm_storage_container" "storageContainer" {
   count                 = var.enable_storage_container && var.enable_storage_account && var.storage_container_count > 0 ? var.storage_container_count : 0
-  name                  = element(var.storage_account_container_names, count.index) 
-  storage_account_name  = element(azurerm_storage_account.storageAccount.*.name,count.index)
-  container_access_type = element(var.container_access_types, count.index) 
+  name                  = element(var.storage_account_container_names, count.index)
+  storage_account_name  = element(azurerm_storage_account.storageAccount.*.name, count.index)
+  container_access_type = element(var.container_access_types, count.index)
 }
