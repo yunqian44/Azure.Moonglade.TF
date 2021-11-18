@@ -28,7 +28,7 @@ variable "resource_group_name" {
 
 ########################## cdn start #########################
 variable "nw_cdn_profile_name" {
-  type  = string
+  type    = string
   default = "2nw-[env]-[region]-je-2ndnw-cdn-001"
 }
 
@@ -37,7 +37,7 @@ variable "nw_cdn_profile_name" {
 # }
 
 variable "cdn_profile_name" {
-  type  = string
+  type    = string
   default = ""
 }
 
@@ -54,27 +54,27 @@ variable "nw_cdn_endpoint_origin_name" {
 ########################## storage account start #######################
 
 variable "storage_account_name" {
-  type  = string
+  type    = string
   default = "moongladestorage[suffix]"
 }
 
 variable "storage_sku" {
   type = map(list(string))
   default = {
-      account_tier = ["Standard"],
-      account_replication_type = ["LRS"]
-    }
+    account_tier             = ["Standard"],
+    account_replication_type = ["LRS"]
+  }
   description = "(required) sku of create a storage account"
 }
 
 variable "storage_account_container_name" {
-  type  = string
+  type    = string
   default = "moongladeimage[suffix]"
 }
 
 variable "container_access_types" {
-  type = list(string)
-  default = [ "container" ]
+  type    = list(string)
+  default = ["container"]
 }
 
 ########################## storage account end #########################
@@ -92,9 +92,9 @@ variable "traffic_routing_method" {
 }
 
 variable "allow_blob_public_access" {
-   type        = bool
-   default     = true
-   description = " Allow or disallow public access to all blobs or containers in the storage account. "
+  type        = bool
+  default     = true
+  description = " Allow or disallow public access to all blobs or containers in the storage account. "
 }
 
 variable "relative_name" {
