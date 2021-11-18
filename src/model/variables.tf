@@ -1,21 +1,21 @@
 ########################## backend start #########################
-variable "storage_account_name" {
-  type        = string
-  default     = "cnbateterraformstorage"
-  description = "(required)The Azure Storage Account Name of the terraform remote Storage"
-}
+# variable "storage_account_name" {
+#   type        = string
+#   default     = "cnbateterraformstorage"
+#   description = "(required)The Azure Storage Account Name of the terraform remote Storage"
+# }
 
-variable "container_name" {
-  type        = string
-  default     = "terraform-state"
-  description = "(required)The Container Name for the terraform remote storage status file"
-}
+# variable "container_name" {
+#   type        = string
+#   default     = "terraform-state"
+#   description = "(required)The Container Name for the terraform remote storage status file"
+# }
 
-variable "key" {
-  type        = string
-  default     = "cnbate.terraform.stats"
-  description = "(required)The Container Key Name for terraform the remote storage status file"
-}
+# variable "key" {
+#   type        = string
+#   default     = "cnbate.terraform.stats"
+#   description = "(required)The Container Key Name for terraform the remote storage status file"
+# }
 ########################## backend end #########################
 
 ########################## resource group start #######################
@@ -54,17 +54,27 @@ variable "nw_cdn_endpoint_origin_name" {
 ########################## storage account start #######################
 
 variable "storage_account_name" {
-  type  = "string"
-  default = "je-2ndnw-blob-001"
+  type  = string
+  default = "moongladestorage[suffix]"
 }
 
 variable "storage_sku" {
-  type = map(string)
+  type = map(list(string))
   default = {
-      account_tier = "Standard",
-      account_replication_type = "S1"
+      account_tier = ["Standard"],
+      account_replication_type = ["LRS"]
     }
   description = "(required) sku of create a storage account"
+}
+
+variable "storage_account_container_name" {
+  type  = string
+  default = "moongladeimage[suffix]"
+}
+
+variable "container_access_types" {
+  type = list(string)
+  default = [ "container" ]
 }
 
 ########################## storage account end #########################
@@ -79,6 +89,12 @@ variable "traffic_routing_method" {
   type        = string
   default     = "Geographic"
   description = "(required) Specifies the algorithm used to route traffic"
+}
+
+variable "allow_blob_public_access" {
+   type        = bool
+   default     = true
+   description = " Allow or disallow public access to all blobs or containers in the storage account. "
 }
 
 variable "relative_name" {
