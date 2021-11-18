@@ -67,6 +67,12 @@ variable "storage_sku" {
   description = "(required) sku of create a storage account"
 }
 
+variable "allow_blob_public_access" {
+  type        = bool
+  default     = true
+  description = " Allow or disallow public access to all blobs or containers in the storage account. "
+}
+
 variable "storage_account_container_name" {
   type    = string
   default = "moongladeimage[suffix]"
@@ -89,12 +95,6 @@ variable "traffic_routing_method" {
   type        = string
   default     = "Geographic"
   description = "(required) Specifies the algorithm used to route traffic"
-}
-
-variable "allow_blob_public_access" {
-  type        = bool
-  default     = true
-  description = " Allow or disallow public access to all blobs or containers in the storage account. "
 }
 
 variable "relative_name" {
