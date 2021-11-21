@@ -2,6 +2,10 @@ output "storageAccountBlobUrl" {
   value = module.moonglade_storage_account.storageAccountBlobUrl
 }
 
+output "cdn_endpoint_url" {
+  value = module.moonglade_cdn.cdn_endpoint_url
+}
+
 # output "cnbate_traffic_manager_name" {
 #   value = module.cnbate_traffic_manager.traffic_manager_profile_name
 # }
