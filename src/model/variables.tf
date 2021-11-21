@@ -27,26 +27,22 @@ variable "resource_group_name" {
 ########################## resource group end #########################
 
 ########################## cdn start #########################
-variable "nw_cdn_profile_name" {
-  type    = string
-  default = "2nw-[env]-[region]-je-2ndnw-cdn-001"
-}
-
-# variable "nw_cdn_endpoint_name" {
-#   default="${var.2nw_cdn_profile_name}.azureedge.net"
-# }
-
 variable "cdn_profile_name" {
   type    = string
-  default = ""
+  default = "moongladecdn[suffix]"
 }
 
-variable "nw_cdn_profile_sku" {
-  default = "Standard_Akamai"
+variable "cdn_endpoint_name" {
+  type    = string
+  default = "moongladecep[suffix]"
 }
 
-variable "nw_cdn_endpoint_origin_name" {
-  default = "stroage"
+variable "cdn_profile_sku" {
+  default = "Standard_Microsoft"
+}
+
+variable "cdn_endpoint_origin_name" {
+  default = "moongladecep"
 }
 
 ########################## cdn end #########################

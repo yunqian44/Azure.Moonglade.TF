@@ -29,6 +29,7 @@ locals {
   storage_account_name           = replace(var.storage_account_name, "[suffix]", random_string.random_prefix.id)
   storage_account_container_name = replace(var.storage_account_container_name, "[suffix]", random_string.random_prefix.id)
   cdn_profile_name               = replace(var.cdn_profile_name, "[suffix]", random_string.random_prefix.id)
+  cdn_endpoint_name              = replace(var.cdn_endpoint_name, "[suffix]", random_string.random_prefix.id)
 }
 
 data "azurerm_resource_group" "moonglade_resource_group" {
@@ -52,16 +53,17 @@ module "moonglade_storage_account" {
   container_access_types          = var.container_access_types
 }
 
-# module "moonglade_cdn" {
-#   source                       = "../module/cdn"
-#   resource_group_name          = data.azurerm_resource_group.moonglade_resource_group.name
-#   location                     = data.azurerm_resource_group.moonglade_resource_group.location
-#   cdn_profile_name             = local.cdn_profile_name
-#   cdn_profile_sku              = var.cdn_profile_sku
-#   cdn_endpoint_origin_name     = var.ec_cdn_endpoint_origin_name
-#   cdn_endpoint_origin_hostname = module.moonglade_storage_account.storageaccountbloburl
-# }
-
+module "moonglade_cdn" {
+  source                       = "../module/cdn"
+  resource_group_name          = data.azurerm_resource_group.moonglade_resource_group.name
+  location                     = data.azurerm_resource_group.moonglade_resource_group.location
+  cdn_profile_name             = local.cdn_profile_name
+  cdn_profile_sku              = var.cdn_profile_sku
+  cdn_endpoint_name            = local.cdn_endpoint_name
+  cdn_endpoint_origin_name     = var.cdn_endpoint_origin_name
+  is_compression_enabled       = true
+  cdn_endpoint_origin_hostname = module.moonglade_storage_account.storageAccountBlobUrl[0]
+}
 
 
 # module "moonglade_Web_app" {
