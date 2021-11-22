@@ -125,11 +125,11 @@ variable "enable_app_service" {
 
 variable "app_service_count" {
   type        = number
-  default     = 2
+  default     = 1
   description = "(required) number of create a web app."
 }
 
-variable "app_service_names" {
+variable "app_service_name" {
   type        = string
   default     = "CnBateBlogWeb01"
   description = "(required) specifies the name of the app service."
