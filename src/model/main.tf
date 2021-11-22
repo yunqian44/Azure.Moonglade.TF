@@ -30,6 +30,8 @@ locals {
   storage_account_container_name = replace(var.storage_account_container_name, "[suffix]", random_string.random_prefix.id)
   cdn_profile_name               = replace(var.cdn_profile_name, "[suffix]", random_string.random_prefix.id)
   cdn_endpoint_name              = replace(var.cdn_endpoint_name, "[suffix]", random_string.random_prefix.id)
+
+  app_service_plan_name = replace(var.app_service_plan_name, "[suffix]", random_string.random_prefix.id)
 }
 
 data "azurerm_resource_group" "moonglade_resource_group" {
@@ -66,19 +68,19 @@ module "moonglade_cdn" {
 }
 
 
-# module "moonglade_Web_app" {
-#   source                = "../module/web_app"
-#   app_service_locations = [local.location_eastAsia, local.location_southeastAsia]
-#   resource_group_name   = data.azurerm_resource_group.cnbate_resource_group.name
+module "moonglade_Web_app" {
+  source                = "../module/web_app"
+  app_service_locations = [data.azurerm_resource_group.moonglade_resource_group.location]
+  resource_group_name   = data.azurerm_resource_group.moonglade_resource_group.name
 
-#   enable                  = var.enable
-#   enable_app_service_plan = var.enable_app_service_plan
-#   app_service_plan_count  = var.app_service_plan_count
-#   app_service_plan_names  = var.app_service_plan_names
-#   app_service_plans       = var.app_service_plans
+  enable                  = var.enable
+  enable_app_service_plan = var.enable_app_service_plan
+  app_service_plan_count  = var.app_service_plan_count
+  app_service_plan_names  = [local.app_service_plan_name]
+  app_service_plans       = var.app_service_plans
 
-#   enable_app_service = var.enable_app_service
-#   app_service_count  = var.app_service_count
-#   app_service_names  = var.app_service_names
-#   app_settings       = var.app_settings
-# }
+  enable_app_service = var.enable_app_service
+  app_service_count  = var.app_service_count
+  app_service_names  = var.app_service_names
+  app_settings       = var.app_settings
+}
