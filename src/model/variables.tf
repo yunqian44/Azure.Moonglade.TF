@@ -103,7 +103,7 @@ variable "app_service_plan_count" {
 
 variable "app_service_plan_name" {
   type        = string
-  default     = "cnbate_appserviceplan01"
+  default     = "moongladeplan[suffix]"
   description = "(required) name of create a web app plan"
 }
 
@@ -131,7 +131,7 @@ variable "app_service_count" {
 
 variable "app_service_name" {
   type        = string
-  default     = "CnBateBlogWeb01"
+  default     = "moongladeweb[suffix]"
   description = "(required) specifies the name of the app service."
 }
 
