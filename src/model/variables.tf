@@ -145,3 +145,7 @@ variable "app_settings" {
   ]
   description = "(Optional) A key-value pair of app settings."
 }
+########################## web service app end #########################
+
+
+########################## web service app start #########################

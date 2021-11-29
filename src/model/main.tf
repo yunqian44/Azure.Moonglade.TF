@@ -31,6 +31,8 @@ locals {
   cdn_endpoint_name              = replace(var.cdn_endpoint_name, "[suffix]", random_string.random_prefix.id)
   app_service_plan_name          = replace(var.app_service_plan_name, "[suffix]", random_string.random_prefix.id)
   app_service_name               = replace(var.app_service_name, "[suffix]", random_string.random_prefix.id)
+  sql_server_names               = replace(var.sql_server_name, "[suffix]", random_string.random_prefix.id)
+  sql_database_names             = replace(var.sql_database_name, "[suffix]", random_string.random_prefix.id)
 }
 
 data "azurerm_resource_group" "moonglade_resource_group" {
@@ -82,4 +84,17 @@ module "moonglade_web_app" {
   app_service_count  = var.app_service_count
   app_service_names  = [local.app_service_name]
   app_settings       = var.app_settings
+}
+
+module "moonglade_sql_database" {
+  source                      = "../module/azure_sql/sql_database"
+  enable_sql_database         = true
+  sql_database_count          = 1
+  location                    = data.azurerm_resource_group.moonglade_resource_group.location
+  resource_group_name         = data.azurerm_resource_group.moonglade_resource_group.name
+  sql_server_names            = [local.sql_server_name]
+  sql_database_names          = [local.sql_database_name]
+  sql_database_editions       = var.sql_database_editions
+  sql_database_max_size_bytes = var.sql_database_max_size_bytes
+  create_models               = var.create_models
 }
