@@ -1,9 +1,10 @@
 resource "azurerm_sql_database" "sql_database" {
-  name                = var.sql_database_name
+  count               = var.enable_sql_database && var.sql_database_count > 0 ? var.sql_database_count : 0
+  name                = element(var.sql_database_names, count.index)
   resource_group_name = var.resource_group_name
   location            = var.location
-  server_name         = var.sql_server_name
-  create_mode         = "Default"
-  edition             = var.sql_database_edition
-  max_size_bytes      = var.sql_database_max_size_bytes
+  server_name         = element(var.sql_server_names, count.index)
+  create_mode         = element(var.create_models) //"Default"
+  edition             = element(var.sql_database_editions, count.index)
+  max_size_bytes      = element(var.sql_database_max_size_bytes, count.index)
 }
