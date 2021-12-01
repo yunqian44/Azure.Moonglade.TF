@@ -148,4 +148,21 @@ variable "app_settings" {
 ########################## web service app end #########################
 
 
-########################## web service app start #########################
+########################## sql server start #########################
+
+variable "sql_server_versions" {
+  type        = list(string)
+  default     = ["12.0"]
+  description = "(Required) The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server)."
+}
+
+variable "administrator_login" {
+  default     = "moongladeplan[suffix]"
+  description = "(required) login name of SQL Server."
+}
+
+variable "sql_server_administrator_login_passwords" {
+  default     = "moongladeplan[suffix]"
+  description = "(required) login password of SQL Server."
+}
+

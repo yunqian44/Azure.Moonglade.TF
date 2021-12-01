@@ -98,3 +98,16 @@ module "moonglade_sql_database" {
   sql_database_max_size_bytes = var.sql_database_max_size_bytes
   create_models               = var.create_models
 }
+
+
+module "moonglade_sql_server" {
+  source                                   = "../module/azure_sql/sql_server"
+  enable_sql_server                        = true
+  sql_server_count                         = 1
+  sql_server_names                         = [local.sql_server_name]
+  resource_group_name                      = data.azurerm_resource_group.moonglade_resource_group.name
+  location                                 = data.azurerm_resource_group.moonglade_resource_group.location
+  sql_server_versions                      = var.sql_server_versions
+  sql_server_administrator_logins          = [local.sql_server_administrator_login]
+  sql_server_administrator_login_passwords = [local.sql_server_administrator_login_password]
+}
