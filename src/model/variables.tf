@@ -147,8 +147,41 @@ variable "app_settings" {
 }
 ########################## web service app end #########################
 
+########################## sql database start #########################
+
+variable "sql_database_name" {
+  type        = string
+  default     = "moongladeplan[suffix]"
+  description = "(required) name of create sql server."
+}
+
+variable "sql_database_editions" {
+  type        = list(string)
+  default     = [""]
+  description = " (Optional) The edition of the database to be created. Applies only if create_mode is Default. Valid values are: Basic, Standard, Premium, DataWarehouse, Business, BusinessCritical, Free, GeneralPurpose, Hyperscale, Premium, PremiumRS, Standard, Stretch, System, System2, or Web. "
+}
+
+variable "sql_database_max_size_bytes" {
+  type        = list(number)
+  default     = [null]
+  description = "(Optional) The maximum size that the database can grow to. Applies only if create_mode is Default"
+}
+
+variable "create_models" {
+  type        = list(string)
+  default     = ["Default"]
+  description = " (Optional) Specifies how to create the database. Valid values are: Default, Copy, OnlineSecondary, NonReadableSecondary, PointInTimeRestore, Recovery, Restore or RestoreLongTermRetentionBackup. Must be Default to create a new database. Defaults to Default."
+}
+
+########################## sql database end #########################
+
 
 ########################## sql server start #########################
+variable "sql_server_name" {
+  type        = string
+  default     = "moongladeplan[suffix]"
+  description = "(required) name of create sql server."
+}
 
 variable "sql_server_versions" {
   type        = list(string)
