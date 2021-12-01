@@ -1,3 +1,15 @@
+variable "enable_sql_database" {
+  type        = bool
+  default     = false
+  description = "(required) main switch whether to create the SQL Database."
+}
+
+variable "sql_database_count" {
+  type        = number
+  default     = 0
+  description = "(required) number of create the SQL Database."
+}
+
 variable "resource_group_name" {
   description = "The name of the resource group in which to create the database. This must be the same as Database Server resource group currently."
 }
