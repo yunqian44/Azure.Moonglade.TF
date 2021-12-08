@@ -23,6 +23,19 @@ resource "random_string" "random_prefix" {
   special = false
 }
 
+resource "random_password" "password" {
+  length           = 16
+  min_lower        = 10
+  min_numeric      = 2
+  min_special      = 2
+  min_upper        = 2
+  number           = true
+  lower            = true
+  upper            = true
+  special          = true
+  override_special = "!$%@#"
+}
+
 locals {
   resource_group_name                     = replace(var.resource_group_name, "[suffix]", random_string.random_prefix.id)
   storage_account_name                    = replace(var.storage_account_name, "[suffix]", random_string.random_prefix.id)
@@ -34,7 +47,7 @@ locals {
   sql_server_name                         = replace(var.sql_server_name, "[suffix]", random_string.random_prefix.id)
   sql_database_name                       = replace(var.sql_database_name, "[suffix]", random_string.random_prefix.id)
   sql_server_administrator_login          = replace(var.sql_server_administrator_login, "[suffix]", random_string.random_prefix.id)
-  sql_server_administrator_login_password = replace(var.sql_server_administrator_login_password, "[suffix]", random_string.random_prefix.id)
+  sql_server_administrator_login_password = replace(var.sql_server_administrator_login_password, "[suffix]", random_password.password.result)
 
 }
 
@@ -102,14 +115,16 @@ module "moonglade_sql_server" {
 }
 
 module "moonglade_sql_database" {
-  source              = "../module/azure_sql/sql_database"
-  enable_sql_database = true
-  sql_database_count  = 1
-  location            = data.azurerm_resource_group.moonglade_resource_group.location
-  resource_group_name = data.azurerm_resource_group.moonglade_resource_group.name
-  sql_server_names    = data.moonglade_sql_server.sql_server_names
-  sql_database_names  = [local.sql_database_name]
-  create_models       = var.create_models
+  source                      = "../module/azure_sql/sql_database"
+  enable_sql_database         = true
+  sql_database_count          = 1
+  location                    = data.azurerm_resource_group.moonglade_resource_group.location
+  resource_group_name         = data.azurerm_resource_group.moonglade_resource_group.name
+  sql_server_names            = module.moonglade_sql_server.sql_server_names
+  sql_database_names          = [local.sql_database_name]
+  create_models               = var.create_models
+  sql_database_editions       = var.sql_database_editions
+  sql_database_max_size_bytes = var.sql_database_max_size_bytes
 }
 
 
