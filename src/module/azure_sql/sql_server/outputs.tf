@@ -3,13 +3,13 @@ output "sql_server_names" {
 }
 
 output "sql_server_login_name" {
-  value = azurerm_sql_database.sql_database.*.administrator_login
+  value = azurerm_sql_server.sql_server.*.administrator_login
 }
 
 output "sql_server_login_password" {
-  value = azurerm_sql_database.sql_database.*.administrator_login_password
+  value = azurerm_sql_server.sql_server.*.administrator_login_password
 }
 
 output "sql_server_domain_name" {
-  value = azurerm_sql_database.sql_database.*.fqdn
+  value = azurerm_sql_server.sql_server.*.fully_qualified_domain_name
 }

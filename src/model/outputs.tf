@@ -19,7 +19,9 @@ output "sql_server_login_name" {
 }
 
 output "sql_server_login_password" {
-  value = module.moonglade_sql_server.sql_server_login_password
+  value       = module.moonglade_sql_server.sql_server_login_password
+  description = "The password for logging in to the database."
+  sensitive   = true
 }
 
 output "sql_server_domain_name" {
