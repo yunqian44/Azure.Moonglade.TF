@@ -151,13 +151,13 @@ variable "app_settings" {
 
 variable "sql_database_name" {
   type        = string
-  default     = "moongladeplan[suffix]"
+  default     = "moongladedb[suffix]"
   description = "(required) name of create sql server."
 }
 
 variable "sql_database_editions" {
   type        = list(string)
-  default     = [""]
+  default     = ["Standard"]
   description = " (Optional) The edition of the database to be created. Applies only if create_mode is Default. Valid values are: Basic, Standard, Premium, DataWarehouse, Business, BusinessCritical, Free, GeneralPurpose, Hyperscale, Premium, PremiumRS, Standard, Stretch, System, System2, or Web. "
 }
 
@@ -179,7 +179,7 @@ variable "create_models" {
 ########################## sql server start #########################
 variable "sql_server_name" {
   type        = string
-  default     = "moongladeplan[suffix]"
+  default     = "moongladesql[suffix]"
   description = "(required) name of create sql server."
 }
 
@@ -189,13 +189,13 @@ variable "sql_server_versions" {
   description = "(Required) The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server)."
 }
 
-variable "administrator_login" {
-  default     = "moongladeplan[suffix]"
+variable "sql_server_administrator_login" {
+  default     = "moonglade"
   description = "(required) login name of SQL Server."
 }
 
-variable "sql_server_administrator_login_passwords" {
-  default     = "moongladeplan[suffix]"
+variable "sql_server_administrator_login_password" {
+  default     = "[suffix]"
   description = "(required) login password of SQL Server."
 }
 
