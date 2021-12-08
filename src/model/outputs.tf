@@ -10,6 +10,22 @@ output "sql_server_name" {
   value = module.moonglade_sql_server.sql_server_names
 }
 
+output "sql_database_name" {
+  value = module.moonglade_sql_database.sql_database_names
+}
+
+output "sql_server_login_name" {
+  value = module.moonglade_sql_server.sql_server_login_name
+}
+
+output "sql_server_login_password" {
+  value = module.moonglade_sql_server.sql_server_login_password
+}
+
+output "sql_server_domain_name" {
+  value = module.moonglade_sql_server.sql_server_domain_name
+}
+
 
 
 # output "cnbate_traffic_manager_name" {
