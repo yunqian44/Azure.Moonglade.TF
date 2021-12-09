@@ -23,17 +23,17 @@ resource "random_string" "random_prefix" {
   special = false
 }
 
-resource "random_password" "password" {
+resource "random_string" "password" {
   length           = 16
-  min_lower        = 10
-  min_numeric      = 2
+  min_numeric      = 4
   min_special      = 2
   min_upper        = 2
+  min_lower        = 8
   number           = true
   lower            = true
   upper            = true
   special          = true
-  override_special = "!$%@#"
+  override_special = "$%@#"
 }
 
 locals {
@@ -47,7 +47,7 @@ locals {
   sql_server_name                         = replace(var.sql_server_name, "[suffix]", random_string.random_prefix.id)
   sql_database_name                       = replace(var.sql_database_name, "[suffix]", random_string.random_prefix.id)
   sql_server_administrator_login          = replace(var.sql_server_administrator_login, "[suffix]", random_string.random_prefix.id)
-  sql_server_administrator_login_password = replace(var.sql_server_administrator_login_password, "[suffix]", random_password.password.result)
+  sql_server_administrator_login_password = replace(var.sql_server_administrator_login_password, "[suffix]", random_string.password.result)
 
 }
 
