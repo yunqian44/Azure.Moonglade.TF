@@ -95,6 +95,7 @@ module "moonglade_web_app" {
   app_service_plan_count  = var.app_service_plan_count
   app_service_plan_names  = [local.app_service_plan_name]
   app_service_plans       = var.app_service_plans
+  kinds                   = var.kinds
 
   enable_app_service = var.enable_app_service
   app_service_count  = var.app_service_count

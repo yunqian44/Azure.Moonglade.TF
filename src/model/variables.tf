@@ -117,6 +117,12 @@ variable "app_service_plans" {
   description = "(required) sku of create a web app plan"
 }
 
+variable "kinds" {
+  type        = list(string)
+  default     = ["Linux"]
+  description = " (Optional) The kind of the App Service Plan to create. "
+}
+
 variable "enable_app_service" {
   type        = bool
   default     = true
