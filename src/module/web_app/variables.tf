@@ -16,6 +16,12 @@ variable "app_service_plan_count" {
   description = "(required) number of create the app web service plan"
 }
 
+variable "kinds" {
+  type        = list(string)
+  description = "(Optional) The kind of the App Service Plan to create. Possible values are Windows (also available as App), Linux, elastic (for Premium Consumption) and FunctionApp (for a Consumption Plan). Defaults to Windows"
+  default     = ["Windows"]
+}
+
 variable "enable_app_service" {
   type        = bool
   default     = false
