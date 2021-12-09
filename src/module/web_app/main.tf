@@ -3,6 +3,9 @@ resource "azurerm_app_service_plan" "service_plan" {
   name                = element(var.app_service_plan_names, count.index)
   location            = element(var.app_service_locations, count.index)
   resource_group_name = var.resource_group_name
+  kind                = element(var.kinds, count.index)
+  reserved            = element(var.kinds, count.index) == "Linux" ? true : false
+
 
   sku {
     tier = lookup(element(var.app_service_plans, count.index), "tier")
