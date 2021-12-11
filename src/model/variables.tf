@@ -151,6 +151,18 @@ variable "app_settings" {
   ]
   description = "(Optional) A key-value pair of app settings."
 }
+
+
+variable "site_config" {
+  type = list(object({
+    linux_fx_version = string,
+    always_on        = bool
+  }))
+  default = [{
+    linux_fx_version = "DOCKER|/ediwang/moonglade:latest"
+    always_on        = true
+  }]
+}
 ########################## web service app end #########################
 
 ########################## sql database start #########################
