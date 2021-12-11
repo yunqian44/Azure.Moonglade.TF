@@ -64,3 +64,15 @@ variable "app_settings" {
   description = "A list(map(string)) of app_settings to apply to web app"
   type        = list(map(string))
 }
+
+variable "site_config" {
+  type = list(object({
+    linux_fx_version = string,
+    always_on        = bool
+  }))
+  default = [{
+    linux_fx_version = ""
+    always_on        = false
+  }]
+}
+

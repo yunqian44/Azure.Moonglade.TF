@@ -101,6 +101,9 @@ module "moonglade_web_app" {
   app_service_count  = var.app_service_count
   app_service_names  = [local.app_service_name]
   app_settings       = var.app_settings
+
+
+  site_config = var.site_config
 }
 
 module "moonglade_sql_server" {
