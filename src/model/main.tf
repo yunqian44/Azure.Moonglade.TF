@@ -48,6 +48,7 @@ locals {
   sql_database_name                       = replace(var.sql_database_name, "[suffix]", random_string.random_prefix.id)
   sql_server_administrator_login          = replace(var.sql_server_administrator_login, "[suffix]", random_string.random_prefix.id)
   sql_server_administrator_login_password = replace(var.sql_server_administrator_login_password, "[suffix]", random_string.password.result)
+  sql_server_firewall_rule_name           = replace(var.sql_server_firewall_rule_name, "[suffix]", "")
 
 }
 
@@ -116,6 +117,12 @@ module "moonglade_sql_server" {
   sql_server_versions                      = var.sql_server_versions
   sql_server_administrator_logins          = [local.sql_server_administrator_login]
   sql_server_administrator_login_passwords = [local.sql_server_administrator_login_password]
+
+  enable_sql_server_firewall_rule = true
+  sql_server_firewall_rule_count  = 1
+  sql_server_firewall_rule_names  = [local.sql_server_firewall_rule_name]
+  start_ip_address                = var.start_ip_address
+  end_ip_address                  = var.end_ip_address
 }
 
 module "moonglade_sql_database" {
