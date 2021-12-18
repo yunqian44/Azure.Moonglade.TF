@@ -13,8 +13,6 @@ resource "azurerm_app_service_plan" "service_plan" {
   }
 }
 
-
-
 resource "azurerm_app_service" "web_service" {
   count               = var.enable && var.enable_app_service_plan && var.enable_app_service && var.app_service_count > 0 ? var.app_service_count : 0
   name                = element(var.app_service_names, count.index)
@@ -28,9 +26,10 @@ resource "azurerm_app_service" "web_service" {
     for_each = lookup(element(var.site_config, count.index), "linux_fx_version") != "" ? ["site_config"] : []
 
     content {
-      linux_fx_version = lookup(element(var.site_config, count.index), "linux_fx_version")
-      always_on        = lookup(element(var.site_config, count.index), "always_on")
+      linux_fx_version          = lookup(element(var.site_config, count.index), "linux_fx_version")
+      always_on                 = lookup(element(var.site_config, count.index), "always_on")
+      http2_enabled             = lookup(element(var.site_config, count.index), "http2_enabled")
+      use_32_bit_worker_process = lookup(element(var.site_config, count.index), "use_32_bit_worker_process")
     }
   }
-
 }

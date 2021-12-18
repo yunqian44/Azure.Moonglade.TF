@@ -38,3 +38,30 @@ variable "sql_server_administrator_login_passwords" {
   description = "The password associated with the administrator_login user. Needs to comply with Azure's Password Policy(https://msdn.microsoft.com/library/ms161959.aspx)"
 }
 
+variable "enable_sql_server_firewall_rule" {
+  type        = bool
+  default     = false
+  description = "(required) main switch whether to create the SQL Server Firewall Rule."
+}
+
+variable "sql_server_firewall_rule_count" {
+  type        = number
+  default     = 0
+  description = "(required) number of create the SQL Server Firwall Rule."
+}
+
+variable "sql_server_firewall_rule_names" {
+  type        = list(string)
+  description = "(Required) The name of the firewall rule."
+}
+
+variable "start_ip_address" {
+  type        = list(string)
+  description = "Required) The starting IP address to allow through the firewall for this rule."
+}
+
+variable "end_ip_address" {
+  type        = list(string)
+  description = "(Required) The ending IP address to allow through the firewall for this rule."
+}
+

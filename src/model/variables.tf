@@ -159,8 +159,10 @@ variable "site_config" {
     always_on        = bool
   }))
   default = [{
-    linux_fx_version = "DOCKER|/ediwang/moonglade:latest"
-    always_on        = true
+    linux_fx_version          = "DOCKER|/ediwang/moonglade:latest"
+    always_on                 = true
+    http2_enabled             = true
+    use_32_bit_worker_process = false
   }]
 }
 ########################## web service app end #########################
@@ -215,5 +217,23 @@ variable "sql_server_administrator_login" {
 variable "sql_server_administrator_login_password" {
   default     = "[suffix]"
   description = "(required) login password of SQL Server."
+}
+
+variable "sql_server_firewall_rule_name" {
+  type        = string
+  default     = "AllowAllIps "
+  description = "(Required) The name of the firewall rule."
+}
+
+variable "start_ip_address" {
+  type        = list(string)
+  default     = ["0.0.0.0"]
+  description = "(Required) The starting IP address to allow through the firewall for this rule."
+}
+
+variable "end_ip_address" {
+  type        = list(string)
+  default     = ["0.0.0.0"]
+  description = "(Required) The ending IP address to allow through the firewall for this rule."
 }
 
