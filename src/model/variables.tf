@@ -159,8 +159,10 @@ variable "site_config" {
     always_on        = bool
   }))
   default = [{
-    linux_fx_version = "DOCKER|/ediwang/moonglade:latest"
-    always_on        = true
+    linux_fx_version          = "DOCKER|/ediwang/moonglade:latest"
+    always_on                 = true
+    http2_enabled             = true
+    use_32_bit_worker_process = false
   }]
 }
 ########################## web service app end #########################

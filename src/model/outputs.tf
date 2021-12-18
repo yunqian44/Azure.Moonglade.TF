@@ -38,3 +38,7 @@ output "cnbate_Web_app_ids" {
 output "cnbate_Web_app_names" {
   value = module.moonglade_web_app.azurerm_app_service_names
 }
+
+output "cnbate_Web_app_urls" {
+  value = module.moonglade_web_app.default_site_hostname
+}
