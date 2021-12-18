@@ -28,9 +28,10 @@ resource "azurerm_app_service" "web_service" {
     for_each = lookup(element(var.site_config, count.index), "linux_fx_version") != "" ? ["site_config"] : []
 
     content {
-      linux_fx_version = lookup(element(var.site_config, count.index), "linux_fx_version")
-      always_on        = lookup(element(var.site_config, count.index), "always_on")
+      linux_fx_version          = lookup(element(var.site_config, count.index), "linux_fx_version")
+      always_on                 = lookup(element(var.site_config, count.index), "always_on")
+      http2_enabled             = lookup(element(var.site_config, count.index), "http2_enabled")
+      use_32_bit_worker_process = lookup(element(var.site_config, count.index), "use_32_bit_worker_process")
     }
   }
-
 }

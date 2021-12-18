@@ -71,8 +71,10 @@ variable "site_config" {
     always_on        = bool
   }))
   default = [{
-    linux_fx_version = ""
-    always_on        = false
+    linux_fx_version          = ""
+    always_on                 = false
+    http2_enabled             = false
+    use_32_bit_worker_process = true
   }]
 }
 
