@@ -13,8 +13,6 @@ resource "azurerm_app_service_plan" "service_plan" {
   }
 }
 
-
-
 resource "azurerm_app_service" "web_service" {
   count               = var.enable && var.enable_app_service_plan && var.enable_app_service && var.app_service_count > 0 ? var.app_service_count : 0
   name                = element(var.app_service_names, count.index)
