@@ -67,8 +67,10 @@ variable "app_settings" {
 
 variable "site_config" {
   type = list(object({
-    linux_fx_version = string,
-    always_on        = bool
+    linux_fx_version          = string,
+    always_on                 = bool
+    http2_enabled             = bool
+    use_32_bit_worker_process = bool
   }))
   default = [{
     linux_fx_version          = ""
