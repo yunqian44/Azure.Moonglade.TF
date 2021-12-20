@@ -41,6 +41,13 @@ variable "sql_database_max_size_bytes" {
 
 variable "create_models" {
   type        = list(string)
-  description = "(Optional) Specifies how to create the database."
+  default     = ["Default"]
+  description = "(Optional) Specifies how to create the database. Valid values are: Default"
+}
+
+variable "requested_service_objective_names" {
+  type        = list(string)
+  default     = ["S0"]
+  description = " (Optional) The service objective name for the database. Valid values depend on edition and location and may include S0, S1, S2, S3, P1, P2, P4, P6, P11 and ElasticPool. e"
 }
 
