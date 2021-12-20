@@ -101,9 +101,12 @@ module "moonglade_web_app" {
   enable_app_service = var.enable_app_service
   app_service_count  = var.app_service_count
   app_service_names  = [local.app_service_name]
-  app_settings       = var.app_settings
-
-
+  app_settings = [merge(var.app_setting,
+    {
+      "ImageStorage__AzureStorageSettings__ContainerName" = local.storage_account_container_name
+      }, {
+      "ImageStorage__AzureStorageSettings__ConnectionString" = module.moonglade_storage_account.connection_string[0]
+  })]
   site_config = var.site_config
 }
 

@@ -141,22 +141,23 @@ variable "app_service_name" {
   description = "(required) specifies the name of the app service."
 }
 
-variable "app_settings" {
-  type = list(map(string))
-  default = [
-    {
-      "ASPNETCORE_ENVIRONMENT" = "Production"
-      "Location"               = "East Asia"
-    }
-  ]
+variable "app_setting" {
+  type = map(any)
+  default = {
+    //"ASPNETCORE_ENVIRONMENT" = "Production"
+    //"Location"               = "East Asia"
+    "ImageStorage__Provider" = "azurestorage"
+  }
   description = "(Optional) A key-value pair of app settings."
 }
 
 
 variable "site_config" {
   type = list(object({
-    linux_fx_version = string,
-    always_on        = bool
+    linux_fx_version          = string
+    always_on                 = bool
+    http2_enabled             = bool
+    use_32_bit_worker_process = bool
   }))
   default = [{
     linux_fx_version          = "DOCKER|/ediwang/moonglade:latest"
