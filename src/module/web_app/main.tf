@@ -32,4 +32,15 @@ resource "azurerm_app_service" "web_service" {
       use_32_bit_worker_process = lookup(element(var.site_config, count.index), "use_32_bit_worker_process")
     }
   }
+
+  dynamic "connection_string" {
+    for_each = lookup(element(var.connection_string, count.index), "connection_string") != "" ? ["connection_string"] : []
+
+    content {
+      name  = lookup(element(var.connection_string, count.index), "connection_string_name") //"Database"
+      type  = lookup(element(var.connection_string, count.index), "connection_type")        //"SQLServer"
+      value = lookup(element(var.connection_string, count.index), "connection_value")       //"Server=some-server.mydomain.com;Integrated Security=SSPI"
+    }
+  }
+
 }
