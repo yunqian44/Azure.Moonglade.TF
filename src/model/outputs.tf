@@ -42,3 +42,7 @@ output "cnbate_Web_app_names" {
 output "cnbate_Web_app_urls" {
   value = module.moonglade_web_app.default_site_hostname
 }
+
+output "sql_database_connection_string" {
+  value = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=True;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)
+}

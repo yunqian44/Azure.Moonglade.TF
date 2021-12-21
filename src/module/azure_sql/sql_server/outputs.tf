@@ -13,3 +13,6 @@ output "sql_server_login_password" {
 output "sql_server_domain_name" {
   value = azurerm_sql_server.sql_server.*.fully_qualified_domain_name
 }
+
+
+

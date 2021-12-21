@@ -80,3 +80,16 @@ variable "site_config" {
   }]
 }
 
+variable "connection_string" {
+  type = list(object({
+    connection_string_name = string,
+    connection_type        = string
+    connection_value       = string
+  }))
+  default = [{
+    connection_string_name = ""
+    connection_type        = ""
+    connection_value       = ""
+  }]
+}
+
