@@ -106,8 +106,21 @@ module "moonglade_web_app" {
       "ImageStorage__AzureStorageSettings__ContainerName" = local.storage_account_container_name
       }, {
       "ImageStorage__AzureStorageSettings__ConnectionString" = module.moonglade_storage_account.connection_string[0]
+      }, {
+      "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = false
+      }, {
+      "WEBSITES_PORT" = 80
+      }, {
+      "PORT" = 80
   })]
   site_config = var.site_config
+
+
+  connection_string = [{
+    connection_string_name = "MoongladeDatabase"
+    connection_type        = "SQLAzure"
+    connection_value       = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=True;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)[0]
+  }]
 }
 
 module "moonglade_sql_server" {
