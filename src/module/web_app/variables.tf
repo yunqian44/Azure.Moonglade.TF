@@ -67,17 +67,31 @@ variable "app_settings" {
 
 variable "site_config" {
   type = list(object({
-    linux_fx_version          = string,
+    linux_fx_version          = string
     always_on                 = bool
     http2_enabled             = bool
     use_32_bit_worker_process = bool
+    number_of_workers         = number
+    default_documents         = list(string)
   }))
   default = [{
     linux_fx_version          = ""
     always_on                 = false
     http2_enabled             = false
     use_32_bit_worker_process = true
+    number_of_workers         = 1
+    default_documents = [
+      "Default.htm",
+      "Default.html",
+      "Default.asp",
+      "index.htm",
+      "index.html",
+      "iisstart.htm",
+      "default.aspx",
+      "index.php",
+    "hostingstart.html"]
   }]
+
 }
 
 variable "connection_string" {

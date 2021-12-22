@@ -144,8 +144,6 @@ variable "app_service_name" {
 variable "app_setting" {
   type = map(any)
   default = {
-    //"ASPNETCORE_ENVIRONMENT" = "Production"
-    //"Location"               = "East Asia"
     "ImageStorage__Provider" = "azurestorage"
   }
   description = "(Optional) A key-value pair of app settings."
@@ -158,12 +156,25 @@ variable "site_config" {
     always_on                 = bool
     http2_enabled             = bool
     use_32_bit_worker_process = bool
+    number_of_workers         = number
+    default_documents         = list(string)
   }))
   default = [{
-    linux_fx_version          = "DOCKER|/ediwang/moonglade:latest"
+    linux_fx_version          = "DOCKER|ediwang/moonglade"
     always_on                 = true
     http2_enabled             = true
     use_32_bit_worker_process = false
+    number_of_workers         = 1
+    default_documents = [
+      "Default.htm",
+      "Default.html",
+      "Default.asp",
+      "index.htm",
+      "index.html",
+      "iisstart.htm",
+      "default.aspx",
+      "index.php",
+    "hostingstart.html"]
   }]
 }
 ########################## web service app end #########################
