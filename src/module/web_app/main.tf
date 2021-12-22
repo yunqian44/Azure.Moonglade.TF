@@ -30,11 +30,13 @@ resource "azurerm_app_service" "web_service" {
       always_on                 = lookup(element(var.site_config, count.index), "always_on")
       http2_enabled             = lookup(element(var.site_config, count.index), "http2_enabled")
       use_32_bit_worker_process = lookup(element(var.site_config, count.index), "use_32_bit_worker_process")
+      default_documents         = lookup(element(var.site_config, count.index), "default_documents")
+      number_of_workers         = lookup(element(var.site_config, count.index), "number_of_workers")
     }
   }
 
   dynamic "connection_string" {
-    for_each = lookup(element(var.connection_string, count.index), "connection_string") != "" ? ["connection_string"] : []
+    for_each = lookup(element(var.connection_string, count.index), "connection_string_name") != "" ? ["connection_string"] : []
 
     content {
       name  = lookup(element(var.connection_string, count.index), "connection_string_name") //"Database"
