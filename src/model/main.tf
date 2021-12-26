@@ -112,6 +112,8 @@ module "moonglade_web_app" {
       "WEBSITES_PORT" = 80
       }, {
       "PORT" = 80
+      }, {
+      "WEBSITES_CONTAINER_START_TIME_LIMIT" = 1200
   })]
   site_config = var.site_config
 
@@ -119,7 +121,7 @@ module "moonglade_web_app" {
   connection_string = [{
     connection_string_name = "MoongladeDatabase"
     connection_type        = "SQLAzure"
-    connection_value       = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=True;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)[0]
+    connection_value       = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=true;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_database.sql_database_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)[0]
   }]
 }
 

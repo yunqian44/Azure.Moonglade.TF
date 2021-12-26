@@ -44,5 +44,5 @@ output "cnbate_Web_app_urls" {
 }
 
 output "sql_database_connection_string" {
-  value = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=True;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)
+  value = formatlist("Server=tcp:%s.database.windows.net,1433;Database=%s;User ID=%s;Password=%s;Encrypt=True;Connection Timeout=30;", module.moonglade_sql_server.sql_server_names, module.moonglade_sql_database.sql_database_names, module.moonglade_sql_server.sql_server_login_name, local.sql_server_administrator_login_password)
 }
