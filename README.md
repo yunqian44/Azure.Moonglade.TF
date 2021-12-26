@@ -21,6 +21,8 @@ This example provides recommended settings:
 
 It is recommended to use stable code from [Release](https://github.com/EdiWang/Moonglade/releases) rather than master branch.
 
+Docker Images from ediwang/moonglade of Docker Hub
+
 ### ☁ Use Terraform Full Deploy on Azure (Recommend)
 
 
