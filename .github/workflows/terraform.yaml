@@ -1,0 +1,104 @@
+name: " using GitHub Actions Validate、Deploy for Terraform Auto CI/CD"
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+env:
+  tf_version: "latest"
+  tf_working_dir: "./src/model/"
+  terraform_rg: "Web_Test_TF_RG"
+  storage_account: "cnbateterraformstorage1"
+  storage_account_container: "terraform-state"
+  key: "moonglande.terraform.stats"
+jobs:
+  terraform_auto_deploy:
+    name: "Azure CLI Action (secrect created)"
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@master
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: false
+          environment: azurecloud
+          allow-no-subscriptions: false
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: false
+          environment: azurecloud
+          allow-no-subscriptions: false
+          azcliversion: 2.30.0
+          inlineScript: |
+            # create azure resource group
+            az group create --location eastasia --name ${{ env.terraform_rg }}
+            # create azure storage account
+            az storage account create --name ${{ env.storage_account }} --resource-group ${{ env.terraform_rg }} --location eastasia --sku Standard_LRS
+            # create storage account container for tf state 
+            az storage container create --name ${{ env.storage_account_container }} --account-name ${{ env.storage_account }}
+            # query storage key and set variable
+            export ARM_ACCESS_KEY=$(az storage account keys list --resource-group ${{env.terraform_rg}} --account-name ${{ env.storage_account }} --query "[?keyName == 'key1'][value]" --output tsv)
+            echo $ARM_ACCESS_KEY
+      - name: "Terraform init azurerm backend"
+        uses: ahmedig/terraform-azurerm-backend@v1
+        with:
+          azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          resource_group_name: ${{ env.terraform_rg }}
+          container_name: ${{ env.storage_account_container }} 
+          storage_account_name: ${{ env.storage_account }}
+          file_name: ${{ env.key }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tf_working_directory: ${{ env.tf_working_dir }}
+
+      - name: "Terraform Validate"
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: "Terraform Plan"
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: "Terraform Deploy"
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: "Terraform Destroy"
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.tf_version }}
+          tf_actions_subcommand: 'destroy'
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.AZURE_CREDENTIALS }}
