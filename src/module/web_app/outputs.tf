@@ -10,6 +10,6 @@ output "azurerm_app_service_names" {
   value = azurerm_app_service.web_service.*.name
 }
 
-output "default_site_hostname" {
+output "default_site_hostnames" {
   value = formatlist("https://%s", azurerm_app_service.web_service.*.default_site_hostname)
 }
