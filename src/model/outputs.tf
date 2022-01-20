@@ -40,7 +40,7 @@ output "cnbate_Web_app_names" {
 }
 
 output "cnbate_Web_app_urls" {
-  value = module.moonglade_web_app.default_site_hostname
+  value = module.moonglade_web_app.default_site_hostnames
 }
 
 output "sql_database_connection_string" {
